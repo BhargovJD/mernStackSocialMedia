@@ -227,4 +227,85 @@ app.listen(port,()=>{
     console.log(`Server is running on : ${port}`)
 })
 ......................................................................
+<!-- # 6 Sending data to Atlas - Sign in -->
+routes/auth.js:
+
+const express = require('express')
+const router = express.Router()
+
+const mongoose = require('mongoose')
+const User = mongoose.model("User")
+
+
+
+router.get('/',(req,res)=>{
+    res.send("hello")
+})
+
+router.post('/signup',(req,res)=>{
+    const{name,email,password} = req.body
+    if(!email || !password || !name){
+       return res.status(422).json({error:"Please add all the fields"})
+    }
+
+
+    User.findOne({email:email})
+    .then((savedUser)=>{
+        if(savedUser){
+            return res.status(422).json({error:"Email address already exist"})
+        }
+
+        else {
+            const user = new User({
+                email,
+                name,
+                password
+            })
+
+            user.save()
+            .then(user=>{
+                res.json({message:"Saved successfully"})
+            })
+            .catch(err=>{
+                console.log(err)
+            })
+        }
+    })
+
+
+
+})
+
+module.exports = router
+....................................................................................
+app.js
+
+const express = require('express')
+const app = express()
+const port = 5000
+const mongoose = require('mongoose')
+const {MONGO_URI} =  require('./keys')
+
+require('./models/User')
+
+app.use(express.json())
+app.use(require('./routes/auth'))
+
+
+mongoose.connect(MONGO_URI)
+
+mongoose.connection.on("connected",()=>{
+    console.log("Connected to mongo db")
+})
+
+mongoose.connection.on("error",(err)=>{
+    console.log("Not connected to mongo db",err)
+})
+
+
+app.listen(port,()=>{
+    console.log(`Server is running on : ${port}`)
+})
+..................................................................
+
 

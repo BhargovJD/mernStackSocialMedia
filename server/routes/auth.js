@@ -1,6 +1,11 @@
 const express = require('express')
 const router = express.Router()
 
+const mongoose = require('mongoose')
+const User = mongoose.model("User")
+
+
+
 router.get('/',(req,res)=>{
     res.send("hello")
 })
@@ -10,9 +15,33 @@ router.post('/signup',(req,res)=>{
     if(!email || !password || !name){
        return res.status(422).json({error:"Please add all the fields"})
     }
-    else{
-        res.json({message:"Successfully posted"})
-    }
+
+
+    User.findOne({email:email})
+    .then((savedUser)=>{
+        if(savedUser){
+            return res.status(422).json({error:"Email address already exist"})
+        }
+
+        else {
+            const user = new User({
+                email,
+                name,
+                password
+            })
+
+            user.save()
+            .then(user=>{
+                res.json({message:"Saved successfully"})
+            })
+            .catch(err=>{
+                console.log(err)
+            })
+        }
+    })
+
+
+
 })
 
 module.exports = router

@@ -218,7 +218,7 @@ mongoose.connection.on("connected",()=>{
     console.log("Connected to mongo db")
 })
 
-mongoose.connection.on("error",(err)=>{
+mongoose.connection.on("error",(err)=>{ 
     console.log("Not connected to mongo db",err)
 })
 

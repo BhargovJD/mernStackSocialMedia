@@ -30,6 +30,8 @@ function Signup() {
         alert(data.message)
         // history.push('/login')
       }
+    }).catch(err=>{
+      console.log(err)
     })
   }
 

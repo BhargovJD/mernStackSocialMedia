@@ -595,3 +595,147 @@ res.send('This is protected page')
 
 module.exports = router
 ....................................................
+<!-- # 11 Post Schema and route -->
+models/Post.js:
+
+const mongoose = require('mongoose')
+const {ObjectId} = mongoose.Schema.Types
+const postSchema = new mongoose.Schema({
+    title:{
+        type:String,
+        required:true
+    },
+
+    body:{
+        type:String,
+        required:true
+    },
+
+    photo:{
+        type:String,
+        default:"no photo"
+    },
+
+    postedBy:{
+        type:ObjectId,
+        ref:"User"
+    },
+})
+
+mongoose.model("Post", postSchema)
+...............................................
+routes/post.js:
+
+const express = require('express')
+const router = express.Router()
+
+const mongoose = require('mongoose')
+
+const requireLogin = require('../middleware/requireLogin')
+
+const Post = mongoose.model("Post")
+
+
+router.post('/createpost', requireLogin,(req,res)=>{
+    const{title,body} = req.body
+    if(!title || !body ){
+       return res.status(422).json({error:"Please add all the fields"})
+    }
+
+
+    else{
+
+    // console.log(req.user)
+    // res.send("ok")
+    req.user.password = undefined
+    const post = new Post({
+        title:title,
+        body:body,
+        postedBy:req.user
+    })
+
+    post.save().then(result=>{
+        res.json({post:result})
+    })
+    .catch(err=>{
+        console.log(err)
+    })
+
+    }
+
+
+})
+
+module.exports = router
+.................................................................
+app.js:
+
+const express = require('express')
+const app = express()
+const port = 5000
+const mongoose = require('mongoose')
+const {MONGO_URI} =  require('./keys')
+
+
+
+
+mongoose.connect(MONGO_URI)
+
+mongoose.connection.on("connected",()=>{
+    console.log("Connected to mongo db")
+})
+
+mongoose.connection.on("error",(err)=>{
+    console.log("Not connected to mongo db",err)
+})
+
+
+require('./models/User')
+require('./models/Post')
+
+app.use(express.json())
+app.use(require('./routes/auth'))
+app.use(require('./routes/post'))
+
+
+app.listen(port,()=>{
+    console.log(`Server is running on : ${port}`)
+})
+
+...........................................................................
+<!-- # 12 view all posts -->
+routes/post.js:
+
+// view all posts
+router.get('/allpost',(req,res)=>{
+    Post.find()
+    .populate("postedBy","_id name")
+    .then(results=>{
+        res.json({allposts:results})
+    })
+    .catch(err=>{
+        console.log(err)
+    })
+})
+....................................................................................
+<!-- # 13 Posts by login user -->
+routes/post.js:
+
+// view posts by login users
+
+router.get('/mypost',requireLogin,(req,res)=>{
+    Post.find({postedBy:req.user._id})
+    .populate("postedBy","_id name")
+    .then(results=>{
+        res.json({myposts:results})
+    })
+    .catch(err=>{
+        console.log(err)
+    })
+})
+........................................................................
+<!-- # 14 Client side -->
+
+create-react-app client
+
+

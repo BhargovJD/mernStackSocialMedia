@@ -3,6 +3,9 @@ const app = express()
 const port = 5000
 const mongoose = require('mongoose')
 const {MONGO_URI} =  require('./keys')
+const cors = require('cors')
+
+app.use(cors())
 
 
 

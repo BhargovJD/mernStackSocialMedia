@@ -1,32 +1,65 @@
-import React from 'react';
+import React,{useState} from 'react';
+// import {useHistory} from 'react-router-dom'
 
 function Signup() {
-  return <div class="container">
 
-  <div class="row">
-      <div class="col"></div>
-      <div class="col"><form>
-    <div class="mb-3">
+  // const history = useHistory()
 
-    <label for="" class="form-label">Name</label>
-      <input type="text" class="form-control" id="" aria-describedby=""/>
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+
+  const postData = ()=>{
+    fetch("http://localhost:5000/signup",{
+      method:"post",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        name:name,
+        password:password,
+        email:email
+      })
+    }).then(res=>res.json())
+    .then(data=>{
+      console.log(data)
+      if(data.error){
+        alert(data.error)
+      }
+      else{
+        alert(data.message)
+        // history.push('/login')
+      }
+    })
+  }
+
+
+  return <div className="container">
+
+  <div className="row">
+      <div className="col"></div>
+      <div className="col">
+        <form>
+    <div className="mb-3">
+
+    <label  className="form-label">Name</label>
+      <input type="text" className="form-control" id="" aria-describedby="" value={name} onChange={(e)=>setName(e.target.value)}/>
    <br/>
 
-      <label for="exampleInputEmail1" class="form-label">Email address</label>
-      <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"/>
+      <label  className="form-label">Email address</label>
+      <input type="text" className="form-control" id="" aria-describedby="" value={email} onChange={(e)=>setEmail(e.target.value)}/>
 
     </div>
-    <div class="mb-3">
-      <label for="exampleInputPassword1" class="form-label">Password</label>
-      <input type="text" class="form-control" id="exampleInputPassword1"/>
+    <div className="mb-3">
+      <label  className="form-label">Password</label>
+      <input type="text" className="form-control" id="" value={password} onChange={(e)=>setPassword(e.target.value)}/>
     </div>
-    <div class="mb-3 form-check">
-      {/* <input type="checkbox" class="form-check-input" id="exampleCheck1"/> */}
-      {/* <label class="form-check-label" for="exampleCheck1">Check me out</label> */}
+    <div className="mb-3 form-check">
+
     </div>
-    <button type="submit" class="btn btn-primary">Signup</button>
+    <button type="button" onClick={()=>{postData()}} className="btn btn-primary">Signup</button>
   </form></div>
-      <div class="col"></div>
+      <div className="col"></div>
     </div>
 
     </div>;

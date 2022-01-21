@@ -29,4 +29,8 @@ Saving token local storage in Login.js
 <!-- # 23 -->
 Context
 
-<!--  -->
+<!-- # 24 -->
+condition on Navbar.js
+
+<!-- # 25 -->
+fetching post on Home.js

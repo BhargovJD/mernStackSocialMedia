@@ -41,7 +41,7 @@ router.post('/createpost', requireLogin,(req,res)=>{
 })
 
 // view all posts
-router.get('/allpost',(req,res)=>{
+router.get('/allpost',requireLogin,(req,res)=>{
     Post.find()
     .populate("postedBy","_id name")
     .then(results=>{

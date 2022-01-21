@@ -742,3 +742,12 @@ create-react-app client
 adding likedBy column in Post.js model
 Like Unlike route in post.js
 
+<!-- #29 -->
+like inlike frontend
+
+<!-- # 30 -->
+adding commentBy column in Post.js model
+route in post.js
+
+<!-- # 31 -->
+

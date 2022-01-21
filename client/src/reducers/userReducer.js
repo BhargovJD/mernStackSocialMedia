@@ -5,5 +5,12 @@ export const reducer = (state,action)=>{
         return action.payload
     }
 
+
+    if(action.type==="CLEAR"){
+        return null
+    }
+
+
+
     return state
 }

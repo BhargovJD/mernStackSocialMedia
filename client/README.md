@@ -34,3 +34,12 @@ condition on Navbar.js
 
 <!-- # 25 -->
 fetching post on Home.js
+
+<!-- # 26 Logout -->
+Navbar.js
+
+<!-- # 27 -->
+Profile page
+
+<!-- # 28 -->
+

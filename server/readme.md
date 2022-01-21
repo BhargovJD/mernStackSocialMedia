@@ -738,4 +738,7 @@ router.get('/mypost',requireLogin,(req,res)=>{
 
 create-react-app client
 
+<!-- # 28 -->
+adding likedBy column in Post.js model
+Like Unlike route in post.js
 

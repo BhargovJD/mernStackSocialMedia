@@ -54,7 +54,7 @@ function Signup() {
     </div>
     <div className="mb-3">
       <label  className="form-label">Password</label>
-      <input type="text" className="form-control" id="" value={password} onChange={(e)=>setPassword(e.target.value)}/>
+      <input type="password" className="form-control" id="" value={password} onChange={(e)=>setPassword(e.target.value)}/>
     </div>
     <div className="mb-3 form-check">
 

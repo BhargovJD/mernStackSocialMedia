@@ -1,8 +1,13 @@
 import React,{useContext} from 'react';
-import {BrowserRouter as Router, Routes, Route, Link, }  from 'react-router-dom'
+import {BrowserRouter as Router, Routes, Route, Link, Navigate, }  from 'react-router-dom'
 import { UserContext } from './../App';
 
+import {useNavigate} from 'react-router-dom'
+
+
 function Navbar() {
+  const navigate = useNavigate()
+
 
   const {state,dispatch}=useContext(UserContext)
 
@@ -15,6 +20,15 @@ function Navbar() {
 
       <li className="nav-item">
       <a className="nav-link"><Link to="/create">Create a post</Link></a>
+      </li>,
+
+      <li>
+      <button onClick={()=>{
+        localStorage.clear()
+        dispatch({type:"CLEAR"})
+        navigate("/login")
+
+      }} type="button" class="btn btn-danger">Logout</button>
       </li>
   ]
     }
@@ -29,6 +43,8 @@ function Navbar() {
         <li className="nav-item">
           <a className="nav-link"><Link to="/signup">Signup</Link></a>
         </li>
+
+
       ]
 
     }

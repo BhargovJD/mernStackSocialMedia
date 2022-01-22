@@ -74,6 +74,37 @@ const unlikePost = (id)=>{
 })
 }
 
+// Comment
+const makeComment = (text,postId)=>{
+  fetch('http://localhost:5000/comment',{
+      method:"put",
+      headers:{
+          "Content-Type":"application/json",
+          "Authorization":"Bearer "+localStorage.getItem("jwt")
+      },
+      body:JSON.stringify({
+          postId:postId,
+          text:text
+      })
+  }).then(res=>res.json())
+  .then(result=>{
+      console.log(result)
+      const newData = data.map(item=>{
+        if(item._id===result._id){
+            return result
+        }else{
+            return item
+        }
+     })
+    setData(newData)
+  }).catch(err=>{
+      console.log(err)
+  })
+}
+
+// delete post
+
+
   return <div>
 
  <div className="container-fluid">
@@ -105,9 +136,25 @@ const unlikePost = (id)=>{
     <h4 className="card-title">{item.postedBy.name}</h4>
     <p className="card-text">Post title: {item.title}</p>
     <p className="card-text">Post body: {item.body}</p>
+
+
+    {
+      item.commentedBy.map(record=>{
+        return(
+            <h6 ><span style={{fontWeight:"500"}}>{record.by.name} : </span> {record.text}</h6>
+              )
+              })
+                }
     <div className="input-group mb-3">
-  <input type="text" className="form-control" placeholder="add a comment" aria-label="Recipient's username" aria-describedby="button-addon2"/>
-  <button className="btn btn-success" type="button" id="button-addon2">Submit</button>
+
+      <form onSubmit={(e)=>{
+        e.preventDefault()
+        makeComment(e.target[0].value, item._id)
+      }}>
+      <input type="text" className="form-control" placeholder="add a comment" aria-label="Recipient's username" aria-describedby="button-addon2"/>
+  {/* <button className="btn btn-success" type="button" id="button-addon2">Submit</button> */}
+      </form>
+
 
 
 </div>
